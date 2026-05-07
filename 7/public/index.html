@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>7</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        #output {
+            margin-top: 20px;
+            font-size: 22px;
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Distributed Application</h1>
+
+    <button onclick="getMessage()">
+        Send Request to Server
+    </button>
+
+    <div id="output"></div>
+
+    <script>
+
+        async function getMessage() {
+
+            const response = await fetch("/message");
+
+            const data = await response.json();
+
+            document.getElementById("output").innerText =
+                data.message;
+        }
+
+    </script>
+
+</body>
+
+</html>
+
+<!-- 
+  Steps:-
+  (1) npm init -y
+  (2) npm install express
+  (3) node server.js
+-->

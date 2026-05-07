@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Task Manager</title>
+
+  <style>
+
+    .completed{
+      color: green;
+      font-weight: bold;
+    }
+
+  </style>
+
+</head>
+<body>
+
+<h2>Task Manager</h2>
+
+<input type="text" id="taskInput" placeholder="Enter task">
+<button onclick="addTask()">Add</button>
+
+<ul id="taskList"></ul>
+
+<script>
+
+let tasks = [];
+
+async function getTasks() {
+
+    const res = await fetch("/tasks");
+    tasks = await res.json();
+
+    let output = "";
+
+    tasks.forEach((task,index) => {
+
+        output += `
+            <li id="task-${index}">
+                ${task.title}
+
+                <button onclick="completeTask(${index})">
+                    Complete
+                </button>
+            </li>
+        `;
+    });
+
+    document.getElementById("taskList").innerHTML = output;
+}
+
+async function addTask() {
+
+    const title = document.getElementById("taskInput").value;
+
+    await fetch("/tasks", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            title
+        })
+
+    });
+
+    document.getElementById("taskInput").value = "";
+
+    getTasks();
+}
+
+function completeTask(index){
+
+    document
+      .getElementById(`task-${index}`)
+      .classList.add("completed");
+}
+
+getTasks();
+
+</script>
+
+</body>
+</html>
